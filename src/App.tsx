@@ -1,6 +1,6 @@
 import { useState, useEffect, FormEvent, useRef } from "react";
-import axios from "axios";
 import Display from "../components/Display";
+import apiClient from "./services/api-client";
 
 interface Category {
   id: Number;
@@ -29,10 +29,8 @@ const App = (props: any) => {
   // let id = 0;
 
   useEffect(() => {
-    axios
-      .get(
-        `http://ec2-44-212-10-233.compute-1.amazonaws.com:3000/api/v1/products`
-      )
+    apiClient
+      .get(`/products`)
       .then((res) => setData(res.data))
       .catch((e) => console.log(e));
   }, []);
@@ -49,14 +47,9 @@ const App = (props: any) => {
       obj.category.id = catRef.current.value;
       obj.name = nameRef.current.value;
       setData([obj, ...data]);
-      axios
-        .post(
-          "http://ec2-44-212-10-233.compute-1.amazonaws.com:3000/api/v1/product/create",
-          obj
-        )
-        .then((res) => {
-          console.log(res.data);
-        });
+      apiClient.post("/product/create", obj).then((res) => {
+        console.log(res.data);
+      });
     }
   }
 

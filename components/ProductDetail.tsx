@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Display from "./Display";
+import apiClient from "../src/services/api-client";
 
 const ProductDetail = () => {
   const params = useParams();
@@ -9,10 +9,8 @@ const ProductDetail = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(
-        `http://ec2-44-212-10-233.compute-1.amazonaws.com:3000/api/v1/products/${params.id}`
-      )
+    apiClient
+      .get(`/products/${params.id}`)
       .then((res) => setData(res.data))
       .catch((e) => console.log(e));
   }, []);
