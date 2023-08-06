@@ -4,3 +4,19 @@
     gap: 20px;
     /* flex-wrap: wrap; */
 }
+
+.my-nav {
+    display: flex;
+    margin: 0 auto;
+    width: 100%;
+    justify-content: space-around;
+    padding: 0.5em 0;
+    flex-direction: row;
+    list-style: none;
+}
+
+li>a {
+    display: inline;
+    list-style: none;
+    text-decoration: none;
+}

@@ -17,9 +17,9 @@ const NavBar = (props: any) => {
               />
               Walk-App
             </a>
-            <ul className="navbar-nav">
+            <ul className="my-nav">
               {props.value.map((item: any) => (
-                <li className="nav-item" key={item.id}>
+                <li className="nav-item " key={item.id}>
                   <Link to={`/productlist/${item.id}`}>{item.name}</Link>
                 </li>
               ))}

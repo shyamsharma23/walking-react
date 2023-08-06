@@ -10,6 +10,7 @@ interface Product {
   category: Category;
   name: String;
   description: String;
+  id: Number;
 }
 
 const App = (props: any) => {
@@ -25,6 +26,7 @@ const App = (props: any) => {
     },
     name: "",
     description: "",
+    id: 1,
   };
   // let id = 0;
 
@@ -51,6 +53,20 @@ const App = (props: any) => {
         console.log(res.data);
       });
     }
+  }
+
+  function handleDelete(id: any) {
+    const originalData = [...data];
+    setData(data.filter((item: any) => item.id !== id));
+    apiClient
+      .delete(`/product/${id}`)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        setData(originalData);
+        console.log(err);
+      });
   }
 
   return (
@@ -97,7 +113,7 @@ const App = (props: any) => {
       </form>
       <div className="flexbox-container">
         {data.map((item: any) => (
-          <Display value={item} key={item.id} />
+          <Display value={item} key={item.id} onDelete={handleDelete} />
         ))}
       </div>
     </div>
