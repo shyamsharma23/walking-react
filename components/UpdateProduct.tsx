@@ -1,6 +1,6 @@
-import { useState, useEffect, FormEvent, useRef } from "react";
-import Display from "../components/Display";
-import apiClient from "./services/api-client";
+import { FormEvent, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import apiClient from "../src/services/api-client";
 
 interface Category {
   id: Number;
@@ -12,12 +12,14 @@ interface Product {
   description: String;
 }
 
-const App = (props: any) => {
+const UpdateProduct = () => {
+  const params = useParams();
+  console.log(params);
   const fieldRef = useRef<any>(null);
   const catRef = useRef<any>(null);
   const nameRef = useRef<any>(null);
-  const [data, setData] = useState<any>([]);
-  console.log(props.value);
+
+  const navigate = useNavigate();
 
   const obj: Product = {
     category: {
@@ -26,14 +28,6 @@ const App = (props: any) => {
     name: "",
     description: "",
   };
-  // let id = 0;
-
-  useEffect(() => {
-    apiClient
-      .get(`/products`)
-      .then((res) => setData(res.data))
-      .catch((e) => console.log(e));
-  }, []);
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -46,30 +40,22 @@ const App = (props: any) => {
       obj.description = fieldRef.current.value;
       obj.category.id = catRef.current.value;
       obj.name = nameRef.current.value;
-      setData([obj, ...data]);
-      apiClient.post("/product/create", obj).then((res) => {
-        console.log(res.data);
-      });
-    }
-  }
 
-  function handleDelete(id: any) {
-    const originalData = [...data];
-    setData(data.filter((item: any) => item.id !== id));
-    apiClient
-      .delete(`/product/${id}`)
-      .then((res) => {
-        console.log(res.data);
-      })
-      .catch((err) => {
-        setData(originalData);
-        console.log(err);
-      });
+      apiClient
+        .put(`/product/${params.id}`, obj)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    navigate("/");
   }
 
   return (
-    <div className="container">
-      <form action="POST" onSubmit={handleSubmit}>
+    <div>
+      <form action="PUT" onSubmit={handleSubmit}>
         <select
           className="form-select mb-3"
           aria-label="Default select example"
@@ -107,15 +93,10 @@ const App = (props: any) => {
             />
           </div>
         </div>
-        <button className="btn btn-primary mb-3">Create</button>
+        <button className="btn btn-success mb-3">Save</button>
       </form>
-      <div className="flexbox-container">
-        {data.map((item: any) => (
-          <Display value={item} key={item.id} onDelete={handleDelete} />
-        ))}
-      </div>
     </div>
   );
 };
 
-export default App;
+export default UpdateProduct;
