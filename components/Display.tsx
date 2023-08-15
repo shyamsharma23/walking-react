@@ -5,7 +5,9 @@ import {
   MDBCardText,
   MDBBtn,
 } from "mdb-react-ui-kit";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { ThemeContext } from "./HomePage";
 
 // interface Type {
 //   name: String;
@@ -13,8 +15,9 @@ import { Link } from "react-router-dom";
 //   id: Number;
 // }
 const Display = (props: any) => {
+  const theme = useContext(ThemeContext);
   return (
-    <div>
+    <div data-bs-theme={`${theme}`}>
       <MDBCard>
         <MDBCardBody>
           <MDBCardTitle>{props.value.name}</MDBCardTitle>
